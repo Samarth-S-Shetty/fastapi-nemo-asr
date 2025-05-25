@@ -1,0 +1,25 @@
+# FastAPI NVIDIA NeMo ASR Application Dependencies
+
+# Core FastAPI and web framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# Audio processing and ML
+librosa==0.10.1
+soundfile==0.12.1
+numpy==1.24.3
+scipy==1.11.4
+
+# ONNX Runtime for model inference
+onnxruntime==1.16.3
+
+# HTTP client for testing
+requests==2.31.0
+
+# Optional: NVIDIA NeMo (for model conversion - large dependency)
+# nemo-toolkit[asr]==1.22.0
+
+# Development and testing
+pytest==7.4.3
+pytest-asyncio==0.21.1

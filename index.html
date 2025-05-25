@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎤 NEMO Hindi ASR</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        h1 { text-align: center; margin-bottom: 30px; }
+        .upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+        .upload-area:hover {
+            border-color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        input[type="file"] {
+            margin: 20px 0;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 100%;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+        button:hover { background: #45a049; }
+        .info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎤 NEMO Hindi ASR</h1>
+        <p style="text-align: center;">Upload a Hindi audio file to get transcription</p>
+
+        <div class="info">
+            <strong>📋 Requirements:</strong><br>
+            • File format: WAV only<br>
+            • Sample rate: 16kHz recommended<br>
+            • Max size: 10MB<br>
+            • Language: Hindi
+        </div>
+
+        <form id="uploadForm" action="/transcribe" method="post" enctype="multipart/form-data">
+            <div class="upload-area">
+                <p>📁 Choose your Hindi audio file</p>
+                <input type="file" name="file" accept=".wav" required>
+            </div>
+            <button type="submit">🚀 Transcribe Audio</button>
+        </form>
+
+        <div id="result" class="result">
+            <h3>📝 Transcription Result:</h3>
+            <div id="transcription"></div>
+            <div id="details"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const button = this.querySelector('button');
+            const result = document.getElementById('result');
+
+            button.textContent = '⏳ Processing...';
+            button.disabled = true;
+            result.style.display = 'none';
+
+            try {
+                const response = await fetch('/transcribe', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('transcription').innerHTML =
+                        `<strong style="font-size: 18px;">"${data.transcription}"</strong>`;
+                    document.getElementById('details').innerHTML =
+                        `<br><small>Confidence: ${data.confidence} | Duration: ${data.audio_duration}s</small>`;
+                    result.style.display = 'block';
+                } else {
+                    alert('Error: ' + data.detail);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+
+            button.textContent = '🚀 Transcribe Audio';
+            button.disabled = false;
+        });
+    </script>
+</body>
+</html>
