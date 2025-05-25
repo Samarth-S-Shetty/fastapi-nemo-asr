@@ -2,6 +2,9 @@
 
 A production-ready FastAPI application for Hindi speech recognition using NVIDIA NeMo's Conformer CTC model, optimized with ONNX for fast inference.
 
+![Web Interface - Before Upload](Images/web-interface-before.png)
+*Beautiful web interface for easy audio file upload*
+
 ## 🎯 Features
 
 - **🇮🇳 Hindi ASR**: NVIDIA NeMo `stt_hi_conformer_ctc_medium` model
@@ -83,6 +86,9 @@ docker run -p 8000:8000 nemo-asr-api
 3. Upload your WAV file using the drag-and-drop interface
 4. Get instant transcription results with confidence scores
 
+![Web Interface - After Upload](Images/web-interface-after.png)
+*Real-time transcription results with confidence scores and metadata*
+
 ### Method 2: Command Line Testing
 
 ```bash
@@ -135,6 +141,9 @@ curl -X POST "http://localhost:8000/transcribe" \
      "status": "success"
    }
    ```
+
+![Postman API Testing](Images/postman-demo.png)
+*Complete Postman setup showing file upload and JSON response*
 
 #### Postman Troubleshooting:
 - ✅ Make sure your server is running first (`main.py`)
@@ -211,6 +220,10 @@ fastapi-nemo-asr/
 │   ├── HIN_F_Geet.wav           # Female voice sample
 │   ├── HIN_F_DebjaniD.wav       # Greeting sample
 │   └── HIN_F_02.wav             # Short clip sample
+├── images/                  # Screenshots and documentation images
+│   ├── web-interface-before.png # Web UI before upload
+│   ├── web-interface-after.png  # Web UI with results
+│   └── postman-demo.png         # Postman API demo
 ├── web_server.py            # 🌟 Integrated web server (RECOMMENDED)
 ├── test_client.py           # Command-line testing utility
 ├── Dockerfile               # Production-ready container
